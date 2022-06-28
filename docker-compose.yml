@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  mysql-dev:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: StudentPlanApp
+    ports:
+      - "3308:3306"
+
