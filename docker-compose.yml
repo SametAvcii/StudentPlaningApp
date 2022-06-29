@@ -9,4 +9,6 @@ services:
       MYSQL_DATABASE: StudentPlanApp
     ports:
       - "3308:3306"
-
+    volumes:
+      - "./my.conf:/etc/mysql/conf.d/config-file.cnf"
+      - "./data:/var/lib/mysql:rw"
