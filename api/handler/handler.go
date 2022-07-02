@@ -35,10 +35,19 @@ func GetUsersByID(db *gorm.DB, id int) echo.HandlerFunc {
 		return c.JSON(http.StatusOK, users)
 	}
 }
-func GetPlansByUserID(db *gorm.DB, id uint) echo.HandlerFunc {
+func GetPlansByUserID(db *gorm.DB, UserId uint) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var plans []*model.Plan
-		if err := db.Limit(10).Select("Name").Where(&model.Plan{User_id: id}).Find(&plans).Error; err != nil {
+		if err := db.Limit(10).Select("Name").Where(&model.Plan{UserId: UserId}).Find(&plans).Error; err != nil {
+			return err
+		}
+		return c.JSON(http.StatusOK, plans)
+	}
+}
+func GetPlansByUsername(db *gorm.DB, username string) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var plans []*model.Plan
+		if err := db.Limit(10).Select("Name").Where(&model.Plan{Username: username}).Find(&plans).Error; err != nil {
 			return err
 		}
 		return c.JSON(http.StatusOK, plans)
@@ -83,7 +92,17 @@ func DeletePLanByUserID(db *gorm.DB, plan_name string, user_id uint) echo.Handle
 
 	return func(c echo.Context) error {
 		var plan []*model.Plan
-		if err := db.Model(&plan).Where(&model.Plan{User_id: user_id, Name: plan_name}).Delete(&plan).Error; err != nil {
+		if err := db.Model(&plan).Where(&model.Plan{UserId: user_id, Name: plan_name}).Delete(&plan).Error; err != nil {
+			return err
+		}
+		return c.JSON(http.StatusOK, plan)
+	}
+}
+func DeletePLanByUsername(db *gorm.DB, plan_name string, username string) echo.HandlerFunc {
+
+	return func(c echo.Context) error {
+		var plan []*model.Plan
+		if err := db.Model(&plan).Where(&model.Plan{Username: username, Name: plan_name}).Delete(&plan).Error; err != nil {
 			return err
 		}
 		return c.JSON(http.StatusOK, plan)

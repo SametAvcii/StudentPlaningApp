@@ -3,12 +3,15 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/SametAvcii/StudentPlaningApp/api/handler"
 	model "github.com/SametAvcii/StudentPlaningApp/api/model"
 	cl "github.com/SametAvcii/StudentPlaningApp/database/client"
+	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 func CreatePlan(cpr model.Plan, conn string) (tx *gorm.DB) {
@@ -24,10 +27,18 @@ func CreatePlan(cpr model.Plan, conn string) (tx *gorm.DB) {
 	fmt.Println("Plan not created because you have already plan")
 	return nil
 }
+
 func CheckPLan(cpr model.Plan) bool {
+
 	var plans []model.Plan
-	Resp := GetResponseResult("http://localhost:1323/user/plans")
-	err := json.Unmarshal(Resp, &plans)
+
+	if cpr.State != "Active" || cpr.State != "Being Done" || cpr.State != "Finish" {
+		fmt.Println("This state not avaliable please change Active, Being Done or Finish ")
+		return false
+	}
+
+	resp := GetResponseResult("http://localhost:1323/user/plans")
+	err := json.Unmarshal(resp, &plans)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,6 +67,39 @@ func GetResponseResult(url string) []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(respData)
 	return respData
+}
+func ListPLanByDay(db *gorm.DB, e *echo.Echo, day time.Weekday, username string) {
+	var plans []model.Plan
+	e.GET("/user/plans/username", handler.GetPlansByUsername(db, username))
+
+	resp := GetResponseResult("http://localhost:1323/user/plans/username")
+	err := json.Unmarshal(resp, &plans)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var PlansArr []model.Plan
+	for i := range plans {
+		if plans[i].Start_date.Weekday() == day {
+			PlansArr = append(PlansArr, plans[i])
+		}
+	}
+	fmt.Println(PlansArr)
+}
+func ListPLanByMonth(db *gorm.DB, e *echo.Echo, month time.Month, username string) {
+	var plans []model.Plan
+	e.GET("/user/plans/username", handler.GetPlansByUsername(db, username))
+
+	resp := GetResponseResult(fmt.Sprintf("http://localhost:1323/user/plans/username"))
+	err := json.Unmarshal(resp, &plans)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var PlansArr []model.Plan
+	for i := range plans {
+		if plans[i].Start_date.Month() == month {
+			PlansArr = append(PlansArr, plans[i])
+		}
+	}
+	fmt.Println(PlansArr)
 }

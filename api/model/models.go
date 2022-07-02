@@ -12,7 +12,8 @@ type Plan struct {
 	State       string    `json:"state,omitempty"`
 	Start_date  time.Time `json:"start_date,omitempty"`
 	Finish_date time.Time `json:"finish_date,omitempty"`
-	User_id     uint      `json:"user_id,omitempty"`
+	Username    string    `json:"username,omitempty"`
+	UserId      uint      `json:"user_id,omitempty"`
 }
 
 type User struct {

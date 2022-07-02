@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/SametAvcii/StudentPlaningApp/api"
-	handler "github.com/SametAvcii/StudentPlaningApp/api/handler"
+	"github.com/SametAvcii/StudentPlaningApp/api/handler"
 	model "github.com/SametAvcii/StudentPlaningApp/api/model"
 	cl "github.com/SametAvcii/StudentPlaningApp/database/client"
 	util "github.com/SametAvcii/StudentPlaningApp/util"
@@ -18,13 +17,14 @@ func main() {
 	var cpr model.Plan
 	cpr.Model = gorm.Model{}
 	cpr.State = "Active"
-	cpr.User_id = 2
+	cpr.UserId = 2
+	cpr.Username = "SametAvciii"
 	cpr.Name = "Js"
 	cpr.Content = "Task For Internship"
 	cpr.Start_date = time.Date(2022, 1, 1, 1, 1, 1, 1, time.UTC)
 	cpr.Finish_date = time.Date(2022, 1, 1, 1, 1, 1, 1, time.UTC)
 	conn := util.DbConn
-	fmt.Println(api.CreatePlan(cpr, conn))
+	//fmt.Println(api.CreatePlan(cpr, conn))
 
 	//plans := []int{1, 2, 3, 4, 5}
 
@@ -49,7 +49,8 @@ func main() {
 	e.GET("/user", handler.GetUsers(db))
 	e.GET("/plan", handler.GetPlans(db))
 	e.GET("/user/id", handler.GetUsersByID(db, 1))
-	e.GET("/user/plans", handler.GetPlansByUserID(db, 2))
+	e.GET("/user/plans/id", handler.GetPlansByUserID(db, 2))
+	e.GET("/user/plans/username", handler.GetPlansByUsername(db, "SametAvciii"))
 	e.POST("/user/update", handler.UpdateUsers(db, "SametAvcii", "Samet", "Avci", "sdadasda", "sasada@gmail.com"))
 	e.POST("/plan/update", handler.UpdatePlans(db, "SametAvcii", "Samet", "Avci", cpr.Start_date, cpr.Finish_date))
 	e.DELETE("/user/delete/", handler.DeleteUsers(db, "User_Name"))
