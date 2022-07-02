@@ -1,18 +1,25 @@
 package api
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type Plan struct {
 	gorm.Model
-	Name        string `json:"name"`
-	Content     string `json:"content"`
-	Start_date  string `json:"start_date"`
-	Finish_date string `json:"finish_date"`
+	Name        string    `json:"name,omitempty"`
+	Content     string    `json:"content,omitempty"`
+	State       string    `json:"state,omitempty"`
+	Start_date  time.Time `json:"start_date,omitempty"`
+	Finish_date time.Time `json:"finish_date,omitempty"`
+	User_id     uint      `json:"user_id,omitempty"`
 }
 
 type User struct {
 	gorm.Model
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
+	UserName string `gorm:"unique;not null"`
+	Name     string `json:"name,omitempty"`
+	Password string `json:"password,omitempty"`
+	Email    string `json:"email,omitempty"`
+	//Plans    []int  `json:"plans"`
 }

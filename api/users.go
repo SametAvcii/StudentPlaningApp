@@ -6,12 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateUser(cpr model.User, conn string) (tx *gorm.DB) {
+func CreateUser(user model.User, conn string) (tx *gorm.DB) {
 	db := cl.Connection(conn)
 	db.AutoMigrate(&model.User{})
 
-	db.Create(&cpr)
-
-	var createPlan model.User
-	return db.First(&createPlan, 1)
+	db.Create(&user)
+	var createUser model.User
+	return db.First(&createUser, 1)
 }
