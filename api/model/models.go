@@ -20,7 +20,7 @@ type User struct {
 	gorm.Model
 	UserName string `gorm:"unique;not null"`
 	Name     string `json:"name,omitempty"`
-	Password string `json:"password,omitempty"`
+	Password string `json:"password" binding:"required,min=8"`
 	Email    string `json:"email,omitempty"`
 	//Plans    []int  `json:"plans"`
 }

@@ -12,5 +12,5 @@ func CreateUser(user model.User, conn string) (tx *gorm.DB) {
 
 	db.Create(&user)
 	var createUser model.User
-	return db.First(&createUser, 1)
+	return db.First(&createUser, 2)
 }

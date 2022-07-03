@@ -18,7 +18,7 @@ func main() {
 	cpr.Model = gorm.Model{}
 	cpr.State = "Active"
 	cpr.UserId = 2
-	cpr.Username = "SametAvciii"
+	cpr.Username = "SametAvcii"
 	cpr.Name = "Js"
 	cpr.Content = "Task For Internship"
 	cpr.Start_date = time.Date(2022, 1, 1, 1, 1, 1, 1, time.UTC)
@@ -30,15 +30,15 @@ func main() {
 
 	var user model.User
 	user.Name = "Samet Avci"
-	user.Password = "asdxd"
+	hashPassword, _ := util.HashPassword("SametAvcii.")
+	user.Password = hashPassword
 	user.Email = "sametavc05@gmail.com1"
-	user.UserName = "SametAvciii"
-	//user.Plans = plans
+	user.UserName = "SametAvci"
 
 	api.CreateUser(user, conn)
 
 	// Echo instance
-	db := cl.Connection(util.DbConn)
+	db := cl.Connection(conn)
 	e := echo.New()
 
 	// Middleware
@@ -46,6 +46,8 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Routes
+
+	//e.POST("/user/create", api.CreateUser(user,db)
 	e.GET("/user", handler.GetUsers(db))
 	e.GET("/plan", handler.GetPlans(db))
 	e.GET("/user/id", handler.GetUsersByID(db, 1))
