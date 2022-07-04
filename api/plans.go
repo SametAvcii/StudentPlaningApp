@@ -48,12 +48,11 @@ func CheckPLan(cpr model.Plan) bool {
 				fmt.Println("You have already plan in This hour")
 				return false
 			}
-			if int(plans[i].Start_date.Hour()) < int(cpr.Start_date.Hour()) && int(plans[i].Finish_date.Hour()) > int(cpr.Start_date.Hour()) {
+			if (plans[i].Start_date.Hour()) < (cpr.Start_date.Hour()) && (plans[i].Finish_date.Hour()) > (cpr.Start_date.Hour()) {
 				fmt.Println("You have already plan in This hour")
 				return false
 			}
 		}
-
 	}
 	return true
 }
@@ -71,7 +70,7 @@ func GetResponseResult(url string) []byte {
 }
 func ListPLanByDay(db *gorm.DB, e *echo.Echo, day time.Weekday, username string) {
 	var plans []model.Plan
-	e.GET("/user/plans/username", handler.GetPlansByUsername(db, username))
+	e.GET("/user/plans/username", handler.GetPlansByUsername(db))
 
 	resp := GetResponseResult("http://localhost:1323/user/plans/username")
 	err := json.Unmarshal(resp, &plans)
@@ -88,7 +87,7 @@ func ListPLanByDay(db *gorm.DB, e *echo.Echo, day time.Weekday, username string)
 }
 func ListPLanByMonth(db *gorm.DB, e *echo.Echo, month time.Month, username string) {
 	var plans []model.Plan
-	e.GET("/user/plans/username", handler.GetPlansByUsername(db, username))
+	e.GET("/user/plans/username", handler.GetPlansByUsername(db))
 
 	resp := GetResponseResult(fmt.Sprintf("http://localhost:1323/user/plans/username"))
 	err := json.Unmarshal(resp, &plans)

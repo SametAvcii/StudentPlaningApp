@@ -50,13 +50,15 @@ func main() {
 	//e.POST("/user/create", api.CreateUser(user,db)
 	e.GET("/user", handler.GetUsers(db))
 	e.GET("/plan", handler.GetPlans(db))
-	e.GET("/user/id", handler.GetUsersByID(db, 1))
-	e.GET("/user/plans/id", handler.GetPlansByUserID(db, 2))
-	e.GET("/user/plans/username", handler.GetPlansByUsername(db, "SametAvciii"))
-	e.POST("/user/update", handler.UpdateUsers(db, "SametAvcii", "Samet", "Avci", "sdadasda", "sasada@gmail.com"))
-	e.POST("/plan/update", handler.UpdatePlans(db, "SametAvcii", "Samet", "Avci", cpr.Start_date, cpr.Finish_date))
-	e.DELETE("/user/delete/", handler.DeleteUsers(db, "User_Name"))
-	e.DELETE("/plan/delete/", handler.DeletePLanByUserID(db, "PLan_name", 1))
+	e.GET("/user/:id", handler.GetUsersByID(db))
+	e.GET("/user/plans/:id", handler.GetPlansByUserID(db))
+	e.GET("/user/plans/:username", handler.GetPlansByUsername(db))
+	e.POST("/user/update/:username", handler.UpdateUsers(db, "SametAvcii", "Samet", "Avci", "sasada@gmail.com"))
+	e.POST("/plan/update/:name", handler.UpdatePlans(db, "Samet", "Avci", cpr.Start_date, cpr.Finish_date))
+	e.DELETE("/user/delete/:username", handler.DeleteUsers(db))
+	e.DELETE("/plan/delete/:id/:name", handler.DeletePLanByUserID(db))
+	e.DELETE("/plan/delete/:username/:name", handler.DeletePLanByUsername(db))
+
 	e.Logger.Fatal(e.Start(":1323"))
 
 }

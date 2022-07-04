@@ -22,5 +22,5 @@ type User struct {
 	Name     string `json:"name,omitempty"`
 	Password string `json:"password" binding:"required,min=8"`
 	Email    string `json:"email,omitempty"`
-	//Plans    []int  `json:"plans"`
+	Plans    []Plan
 }
